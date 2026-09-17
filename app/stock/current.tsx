@@ -1,0 +1,28 @@
+import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React, { useMemo, useState } from 'react';
+import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { locations, products } from '@/mock/data';
+import { useColors } from '@/hooks/useColors';
+import { useMockStore } from '@/context/MockStoreContext';
+
+export default function CurrentStockScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { getStock } = useMockStore();
+  const [selectedLocation, setSelectedLocation] = useState('All Locations');
+  const [search, setSearch] = useState('');
+  const rows = useMemo(() => products.filter((product) => product.name.toLowerCase().includes(search.toLowerCase())).map((product) => ({ product, balances: locations.map((location) => ({ location, quantity: getStock(product.id, location.id) })) })).filter((row) => selectedLocation === 'All Locations' || row.balances.some((balance) => balance.location.name === selectedLocation)), [getStock, search, selectedLocation]);
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <ScrollView contentContainerStyle={{ paddingTop: Math.max(insets.top, 12), paddingHorizontal: 20, paddingBottom: 35 }} showsVerticalScrollIndicator={false}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 13, marginBottom: 20 }}><Pressable onPress={() => router.back()} style={{ width: 40, height: 40, borderRadius: 13, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center' }}><Feather name="arrow-left" size={18} color={colors.foreground} /></Pressable><View><Text style={{ color: colors.foreground, fontFamily: 'Inter_700Bold', fontSize: 19 }}>Current stock</Text><Text style={{ color: colors.mutedForeground, fontFamily: 'Inter_400Regular', fontSize: 11, marginTop: 3 }}>Live view from posted transactions</Text></View></View>
+        <View style={{ height: 48, borderRadius: 14, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.card, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 13, gap: 9, marginBottom: 13 }}><Feather name="search" size={17} color={colors.mutedForeground} /><TextInput value={search} onChangeText={setSearch} placeholder="Search products" placeholderTextColor={colors.mutedForeground} style={{ flex: 1, fontFamily: 'Inter_500Medium', fontSize: 12, color: colors.foreground }} /></View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 7, paddingBottom: 18 }}>{['All Locations', ...locations.map((location) => location.name)].map((location) => <Pressable key={location} onPress={() => setSelectedLocation(location)} style={{ paddingHorizontal: 12, paddingVertical: 9, borderRadius: 10, backgroundColor: selectedLocation === location ? colors.charcoal : colors.card, borderWidth: 1, borderColor: selectedLocation === location ? colors.charcoal : colors.border }}><Text style={{ color: selectedLocation === location ? colors.white : colors.mutedForeground, fontFamily: 'Inter_600SemiBold', fontSize: 10 }}>{location}</Text></Pressable>)}</ScrollView>
+        <View style={{ padding: 14, borderRadius: 16, backgroundColor: colors.infoSoft, flexDirection: 'row', alignItems: 'flex-start', gap: 9, marginBottom: 17 }}><Feather name="info" size={15} color={colors.info} /><Text style={{ color: colors.info, fontFamily: 'Inter_500Medium', fontSize: 11, lineHeight: 16, flex: 1 }}>Inventory is calculated from POSTED stock movements only. Drafts stay out of these totals.</Text></View>
+        <View style={{ gap: 10 }}>{rows.map(({ product, balances }) => { const total = balances.reduce((sum, balance) => sum + balance.quantity, 0); const low = total <= product.minimumStock; return <View key={product.id} style={{ backgroundColor: colors.card, borderRadius: 18, borderWidth: 1, borderColor: low ? '#F4C7C7' : colors.border, padding: 14 }}><View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}><View style={{ flex: 1 }}><Text style={{ color: colors.foreground, fontFamily: 'Inter_700Bold', fontSize: 13 }}>{product.name}</Text><Text style={{ color: colors.mutedForeground, fontFamily: 'Inter_500Medium', fontSize: 10, marginTop: 4 }}>{product.sku} · {product.category} · {product.unit}</Text></View><View style={{ alignItems: 'flex-end' }}><Text style={{ color: low ? colors.destructive : colors.foreground, fontFamily: 'Inter_700Bold', fontSize: 18 }}>{total}</Text><Text style={{ color: colors.mutedForeground, fontFamily: 'Inter_500Medium', fontSize: 9 }}>Total Quantity</Text></View></View><View style={{ flexDirection: 'row', gap: 8 }}>{balances.map((balance) => <View key={balance.location.id} style={{ flex: 1, backgroundColor: colors.background, borderRadius: 11, padding: 10 }}><Text style={{ color: colors.mutedForeground, fontFamily: 'Inter_500Medium', fontSize: 9 }}>{balance.location.name} Quantity</Text><Text style={{ color: colors.foreground, fontFamily: 'Inter_700Bold', fontSize: 14, marginTop: 5 }}>{balance.quantity} <Text style={{ color: colors.mutedForeground, fontFamily: 'Inter_500Medium', fontSize: 9 }}>{product.unit}</Text></Text></View>)}</View></View> })}</View>
+      </ScrollView>
+    </View>
+  );
+}

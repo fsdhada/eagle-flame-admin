@@ -1,0 +1,163 @@
+import type {
+  Category,
+  Location,
+  MockUser,
+  Product,
+  SalesRecord,
+  StockBalance,
+  StockTransaction,
+  Supplier,
+} from '@/models';
+
+export const categories: Category[] = [
+  { id: 'cat-3', name: '3 Burner Stoves', productCount: 4, active: true },
+  { id: 'cat-4', name: '4 Burner Stoves', productCount: 5, active: true },
+  { id: 'cat-commercial', name: 'Commercial Stoves', productCount: 3, active: true },
+  { id: 'cat-kitchen', name: 'Kitchen Items', productCount: 8, active: true },
+  { id: 'cat-spares', name: 'Spare Parts', productCount: 6, active: true },
+  { id: 'cat-accessories', name: 'Accessories', productCount: 7, active: true },
+];
+
+export const locations: Location[] = [
+  { id: 'loc-warehouse', name: 'Warehouse', code: 'WH-01', address: 'Plot 18, Industrial Area', active: true },
+  { id: 'loc-showroom', name: 'Showroom', code: 'SR-01', address: 'Cairo Road, Lusaka', active: true },
+];
+
+export const suppliers: Supplier[] = [
+  { id: 'sup-1', name: 'Lusaka Gas Equipment', contactName: 'Martha Banda', phone: '+260 97 123 4500', active: true },
+  { id: 'sup-2', name: 'KitchenPro Imports', contactName: 'Daniel Phiri', phone: '+260 96 882 0192', active: true },
+  { id: 'sup-3', name: 'FlameTech Distributors', contactName: 'Ruth Mwansa', phone: '+260 95 110 3388', active: true },
+];
+
+export const products: Product[] = [
+  {
+    id: 'prod-4b-deluxe',
+    name: '4 Burner Stove Deluxe',
+    sku: 'EF-4B-DELUXE',
+    category: '4 Burner Stoves',
+    brand: 'Eagle Flame',
+    shortDescription: 'Durable four-burner gas stove for modern kitchens.',
+    fullDescription: 'A reliable four-burner stove with enamel pan supports, brass burners and easy-clean surfaces for everyday family cooking.',
+    landingCost: 890,
+    sellingPrice: 1290,
+    minimumStock: 10,
+    unit: 'PCS',
+    status: 'Active',
+    customerVisibility: 'Visible',
+    featured: true,
+    sortOrder: 1,
+    imageColor: '#FFF0EB',
+    imageIcon: 'grid',
+  },
+  {
+    id: 'prod-3b-classic',
+    name: '3 Burner Stove Classic',
+    sku: 'EF-3B-CLASSIC',
+    category: '3 Burner Stoves',
+    brand: 'Eagle Flame',
+    shortDescription: 'Compact three-burner stove for smaller kitchens.',
+    fullDescription: 'A space-conscious three-burner stove with strong flame control, designed for everyday cooking in apartments and smaller homes.',
+    landingCost: 620,
+    sellingPrice: 920,
+    minimumStock: 8,
+    unit: 'PCS',
+    status: 'Active',
+    customerVisibility: 'Visible',
+    featured: false,
+    sortOrder: 2,
+    imageColor: '#FFF4DE',
+    imageIcon: 'grid',
+  },
+  {
+    id: 'prod-commercial-2',
+    name: 'Commercial Double Burner',
+    sku: 'EF-COM-2B',
+    category: 'Commercial Stoves',
+    brand: 'Eagle Flame Pro',
+    shortDescription: 'High-output double burner for commercial kitchens.',
+    fullDescription: 'Heavy-duty commercial burner with reinforced cast iron supports and high-output burners for restaurants and caterers.',
+    landingCost: 1180,
+    sellingPrice: 1680,
+    minimumStock: 6,
+    unit: 'PCS',
+    status: 'Active',
+    customerVisibility: 'Visible',
+    featured: true,
+    sortOrder: 3,
+    imageColor: '#EAF3FB',
+    imageIcon: 'zap',
+  },
+  {
+    id: 'prod-pan-set',
+    name: 'Non-Stick Pan Set',
+    sku: 'EF-KIT-PAN-SET',
+    category: 'Kitchen Items',
+    brand: 'Eagle Flame Home',
+    shortDescription: 'Three-piece everyday pan set.',
+    fullDescription: 'A practical three-piece non-stick pan set with comfortable handles and even heat distribution.',
+    landingCost: 240,
+    sellingPrice: 390,
+    minimumStock: 12,
+    unit: 'SET',
+    status: 'Active',
+    customerVisibility: 'Visible',
+    featured: false,
+    sortOrder: 4,
+    imageColor: '#E7F5EE',
+    imageIcon: 'disc',
+  },
+  {
+    id: 'prod-regulator',
+    name: 'Gas Regulator Standard',
+    sku: 'EF-SP-REG-STD',
+    category: 'Spare Parts',
+    brand: 'Eagle Flame',
+    shortDescription: 'Standard LPG regulator replacement.',
+    fullDescription: 'Certified standard LPG regulator for compatible Eagle Flame stoves and selected kitchen appliances.',
+    landingCost: 85,
+    sellingPrice: 145,
+    minimumStock: 20,
+    unit: 'PCS',
+    status: 'Active',
+    customerVisibility: 'Visible',
+    featured: false,
+    sortOrder: 5,
+    imageColor: '#F1ECFF',
+    imageIcon: 'settings',
+  },
+];
+
+export const stockBalances: StockBalance[] = [
+  { productId: 'prod-4b-deluxe', locationId: 'loc-warehouse', quantity: 18, reserved: 2 },
+  { productId: 'prod-4b-deluxe', locationId: 'loc-showroom', quantity: 7, reserved: 1 },
+  { productId: 'prod-3b-classic', locationId: 'loc-warehouse', quantity: 9, reserved: 0 },
+  { productId: 'prod-3b-classic', locationId: 'loc-showroom', quantity: 4, reserved: 0 },
+  { productId: 'prod-commercial-2', locationId: 'loc-warehouse', quantity: 5, reserved: 1 },
+  { productId: 'prod-commercial-2', locationId: 'loc-showroom', quantity: 2, reserved: 0 },
+  { productId: 'prod-pan-set', locationId: 'loc-warehouse', quantity: 24, reserved: 3 },
+  { productId: 'prod-pan-set', locationId: 'loc-showroom', quantity: 8, reserved: 1 },
+  { productId: 'prod-regulator', locationId: 'loc-warehouse', quantity: 16, reserved: 0 },
+  { productId: 'prod-regulator', locationId: 'loc-showroom', quantity: 6, reserved: 0 },
+];
+
+export const stockTransactions: StockTransaction[] = [
+  { id: 'txn-1', type: 'Stock In', status: 'POSTED', productId: 'prod-4b-deluxe', quantity: 12, locationId: 'loc-warehouse', reference: 'GRN-1048', user: 'Sarah M.', createdAt: 'Today, 09:42', note: 'Supplier delivery' },
+  { id: 'txn-2', type: 'Transfer', status: 'POSTED', productId: 'prod-3b-classic', quantity: 4, locationId: 'loc-warehouse', toLocationId: 'loc-showroom', reference: 'TRF-0251', user: 'James K.', createdAt: 'Today, 08:15' },
+  { id: 'txn-3', type: 'Stock Out', status: 'POSTED', productId: 'prod-pan-set', quantity: 2, locationId: 'loc-showroom', reference: 'SAL-8842', user: 'Sarah M.', createdAt: 'Yesterday, 16:20' },
+  { id: 'txn-4', type: 'Adjustment', status: 'POSTED', productId: 'prod-commercial-2', quantity: -1, locationId: 'loc-warehouse', reference: 'ADJ-0047', user: 'Admin', createdAt: 'Yesterday, 14:05', note: 'Damaged unit' },
+  { id: 'txn-5', type: 'Stock In', status: 'DRAFT', productId: 'prod-regulator', quantity: 30, locationId: 'loc-warehouse', reference: 'GRN-DRAFT-03', user: 'James K.', createdAt: 'Yesterday, 11:30' },
+];
+
+export const recentSales: SalesRecord[] = [
+  { id: 'sale-1', item: '4 Burner Stove Deluxe', amount: 1290, channel: 'Showroom', time: '10 min ago' },
+  { id: 'sale-2', item: 'Non-Stick Pan Set', amount: 780, channel: 'Website', time: '42 min ago' },
+  { id: 'sale-3', item: '3 Burner Stove Classic', amount: 920, channel: 'Showroom', time: '1 hr ago' },
+];
+
+export const currentUser: MockUser = {
+  id: 'user-1',
+  name: 'Sarah Mwansa',
+  email: 'admin@eagleflame.co.zm',
+  role: 'Administrator',
+  initials: 'SM',
+};
